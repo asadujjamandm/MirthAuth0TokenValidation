@@ -1,5 +1,9 @@
 import java.security.interfaces.RSAPublicKey;
-
+import java.util.List;
+import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Date;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -26,7 +30,6 @@ class Main{
                         .asString();
 
             String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJpc3MiOiJhdXRoMCJ9.AbIJTDMFc7yUa5MhvcP03nJPyCPzZtQcGEp-zWfOkEE";
-
             //DecodedJWT decodedJwt = JWT.decode(token);
             
             Gson gson = new Gson();
@@ -39,7 +42,17 @@ class Main{
             Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null);
             Verification verifier = JWT.require(algorithm);
             var validate = verifier.build().verify(decodedJwt);
-                        // try {
+
+            String audience = validate.getAudience().toString();
+            var expDate=validate.getExpiresAt();
+           //var listString= n.replace(/^\[(.+)\]$/,'$1')
+            Date currentDate=new Date(); 
+            boolean isVerify=false;
+            if(audience.equals("[https://mirth-api.com]")&&expDate.after(currentDate)){
+                isVerify=true;
+            }
+            System.out.println(isVerify);
+            // try {
                         //     Algorithm algorithm = Algorithm.RSA256();
                         //     JWTVerifier verifier = JWT.require(algorithm)
                         //         .withIssuer("auth0")
