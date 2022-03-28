@@ -1,3 +1,5 @@
+package src.MirthAuth0;
+
 public class Response {
     public String access_token;
     public int expires_in;
