@@ -9,8 +9,9 @@ public class log {
     
     public void write(String msg) {    
         try {
-            FileWriter myWriter = new FileWriter("C:\\Program Files\\Mirth Connect\\custom-lib\\log.txt");
-            myWriter.write(new Date().toString() + " " + msg);
+            FileWriter myWriter = new FileWriter("C:\\Program Files\\Mirth Connect\\custom-lib\\log.txt",true);                    
+
+            myWriter.append(new Date().toString() + " " + msg + "\n");
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {

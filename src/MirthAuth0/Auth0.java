@@ -1,5 +1,6 @@
 package src.MirthAuth0;
 
+import java.io.*;
 import com.auth0.jwk.Jwk;
 import com.auth0.jwk.JwkProvider;
 import com.auth0.jwk.JwkProviderBuilder;
@@ -48,7 +49,14 @@ public class Auth0 {
             
         }
         catch(Exception e){
-            _log.write("VerifyToken() :"+e.getMessage());            
+            _log.write("VerifyToken() :"+e.getMessage());   
+
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            String stackTrace = sw.toString();
+            _log.write("VerifyToken() "+ stackTrace);           
             return false;
         }
         
