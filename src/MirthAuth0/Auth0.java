@@ -26,14 +26,18 @@ public class Auth0 {
     public boolean VerifyToken() {
         try{
             String issuer = _appSettings.Issuer;
+            _log.write("issuer :"+issuer);
             DecodedJWT decodedJwt = JWT.decode(this._Token);
+            _log.write("decodedJwt :"+decodedJwt);
             JwkProvider jwkProvider = new JwkProviderBuilder(issuer).build();
             Jwk jwk = jwkProvider.get(decodedJwt.getKeyId());
             Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null);
             Verification verifier = JWT.require(algorithm);
             var validate = verifier.build().verify(decodedJwt);
             String audience = validate.getAudience().toString();
-            var expDate=validate.getExpiresAt();           
+            _log.write("audience :"+audience);
+            var expDate=validate.getExpiresAt(); 
+            _log.write("expDate :"+expDate);        
             Date currentDate=new Date(); 
             boolean isVerify=false;
             if(audience.equals("["+_appSettings.Audience+"]")&&expDate.after(currentDate)){
@@ -44,7 +48,7 @@ public class Auth0 {
             
         }
         catch(Exception e){
-            _log.write(e.getMessage());            
+            _log.write("VerifyToken() :"+e.getMessage());            
             return false;
         }
         
